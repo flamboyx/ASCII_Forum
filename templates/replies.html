@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+    <div class="container">
+        <h3>=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=//</h3>
+        <h1 class="board-name">Название доски</h1>
+
+        <br>
+
+        <a onclick="showReplyComment()" href=""><h3>Ответить в тред</h3></a>
+        
+        <div class="comment-area hide" id="reply-area">
+            <textarea name="comment" placeholder="Комментарий"></textarea>
+            <input type="submit">
+        </div>
+
+        <h3>=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=//</h3>
+
+        <br>
+        <br>
+
+        <div class="tred">
+            <div class="tred-head">
+                <span class="tred-started-by">Автор</span>
+                <span class="tred-data">Дата</span>
+                <span class="tred-replies">Ответы</span>
+            </div>
+            <div class="tred-body">
+                <h3 class="tred-title">Название</h3>
+                <p class="tred-description">Описание</p>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="replies">
+            <div class="reply">
+                <div class="reply-head">
+                    <span class="reply-started-by">Автор</span>
+                    <span class="reply-data">Дата</span>
+                    <span class="reply-replies">Ответы</span>
+                    <a href="" class="reply-reply">Ответ</a>
+                </div>
+                <div class="reply-body">
+                    <p class="reply-description">Описание</p>
+                </div>
+                
+                <br>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}

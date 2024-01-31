@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Forum</title>
+
+</head>
+<body>
+    <header>
+        <h1>ASCII Forum</h1>
+        <h2>#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#</h2>
+        <div class="navbar">
+            <nav class="navigation">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="">Регистрация</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}
+    {%  endblock content %}
+
+    <footer>
+        <br>
+        <br>
+
+        <h2>#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#</h2>
+        <span>&copy; &nbsp; Трепаченко Тимофей | Все права защищены, бла-бла-бла...</span>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
