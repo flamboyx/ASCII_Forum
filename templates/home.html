@@ -34,18 +34,22 @@
         </div>
     
         <br>
-    
-        <div class="boards">
+
+        <div class="forums">
             <p><b>|----------------------------------------------------|</b></p>
             <p><b>| Доска | Название | Описание | Постов |</b></p>
             <p><b>|----------|--------------|---------------|-----------|</b></p>
-            <ul class="board-list">
-                <li>| <a href="">/b/</a> | Бред | Всякий бред | 0 |</li>
-                <li>| <a href="">/b/</a> | Бред | Всякий бред | 0 |</li>
-                <li>| <a href="">/b/</a> | Бред | Всякий бред | 0 |</li>
-                <li>| <a href="">/b/</a> | Бред | Всякий бред | 0 |</li>
-                <li>| <a href="">/b/</a> | Бред | Всякий бред | 0 |</li>
-            </ul>
+
+            {% for forum in forums %}
+                <div class="forum">
+                    <a class="forum-board" href="{{ forum.get_url }}">| {{ forum.board }} | </a>
+                    <span class="forum-title">{{ forum.title }} | </span>
+                    <span class="forum-description">{{ forum.description }} | </span>
+                    <span class="forum-treds">{{ forum.num_treds }} |</span>
+                    <br>
+                    <br>
+                </div>
+            {% endfor %}
         </div>
     </div>
 

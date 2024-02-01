@@ -193,3 +193,5 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+media/avatars/

@@ -1,61 +1,120 @@
-import uuid
-
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from pytils.translit import slugify
+from django.contrib.auth import get_user_model
 from django.utils.timesince import timesince
 from django_resized import ResizedImageField
+from django.shortcuts import reverse
 from tinymce.models import HTMLField
 
-
-class CustomUserManager(UserManager):
-    def _create_user(self, name, password, **extra_fields):
-
-        user = self.model(name=name, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-
-        return user
-
-    def create_user(self, name=None, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        extra_fields.setdefault('is_superuser', False)
-        return self._create_user(name, password, **extra_fields)
-
-    def create_superuser(self, name=None, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        return self._create_user(name, password, **extra_fields)
+User = get_user_model()
 
 
-class User(AbstractBaseUser, PermissionsMixin):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=255, unique=True)
+class Author(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    name = models.CharField(max_length=50, unique=True)
     points = models.IntegerField(default=0)
     avatar = ResizedImageField(size=[100, 100], quality=100, upload_to='avatars', default=None, null=True, blank=True)
 
-    objects = CustomUserManager()
+    def __str__(self):
+        return self.name
 
-    USERNAME_FIELD = 'name'
-    REQUIRED_FIELDS = []
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(Author, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
 
 class Category(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=50)
-    board = models.CharField(max_length=10)
+    slug = models.SlugField(max_length=10, unique=True, blank=True)
+    title = models.CharField(max_length=50, unique=True)
+    board = models.CharField(max_length=10, unique=True)
     description = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.board)
+        super(Category, self).save(*args, **kwargs)
 
-class Tred(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=200)
-    started_by = models.ForeignKey(User, related_name='treds', on_delete=models.CASCADE)
+    def get_url(self):
+        return reverse("treds", kwargs={
+            "slug": self.slug,
+        })
+
+    @property
+    def num_treds(self):
+        return Tred.objects.filter(category=self).count()
+
+    class Meta:
+        verbose_name = 'Доска'
+        verbose_name_plural = 'Доски'
+
+
+class Reply(models.Model):
+    created_by = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = HTMLField()
-    category = models.ForeignKey(Category, related_name='treds', on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
+        return self.content[:100]
+
+    class Meta:
+        verbose_name = 'Ответ'
+        verbose_name_plural = 'Ответы'
+
+
+class Comment(models.Model):
+    created_by = models.ForeignKey(Author, on_delete=models.CASCADE)
+    content = HTMLField()
+    date = models.DateTimeField(auto_now_add=True)
+    replies = models.ManyToManyField(Reply, blank=True)
+
+    def __str__(self):
+        return self.content[:100]
+
+    @property
+    def num_replies(self):
+        return self.replies.count()
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+
+class Tred(models.Model):
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    title = models.CharField(max_length=200)
+    started_by = models.ForeignKey(Author, on_delete=models.CASCADE)
+    content = HTMLField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    comments = models.ManyToManyField(Comment, blank=True)
+
+    def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Tred, self).save(*args, **kwargs)
+
+    def get_url(self):
+        return reverse("replies", kwargs={
+            "tred": self.slug,
+            "category": self.category.slug
+        })
+
+    @property
+    def num_comments(self):
+        return self.comments.count()
+
+    class Meta:
+        verbose_name = 'Тред'
+        verbose_name_plural = 'Треды'

@@ -4,7 +4,7 @@
     
     <div class="container">
         <h3>=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=//</h3>
-        <h1 class="board-name">Название доски</h1>
+        <a href="{{ tred.category.get_url }}"><h1 class="board-name">{{ tred.category.title }}</h1></a>
 
         <br>
 
@@ -22,34 +22,65 @@
 
         <div class="tred">
             <div class="tred-head">
-                <span class="tred-started-by">Автор</span>
-                <span class="tred-data">Дата</span>
-                <span class="tred-replies">Ответы</span>
+                {% if tred.started_by.avatar %}
+                    <img class="tred-started-by-avatar" src="{{ tred.started_by.avatar.url }}">
+                {% endif %}
+                <span class="tred-started-by">{{ tred.started_by.name }} | </span>
+                <span class="tred-started-by-points">Очков: {{ tred.started_by.points }} | </span>
+                <span class="tred-date">{{ tred.date }} | </span>
+                <span class="tred-replies">Ответов: {{ tred.num_comments }}</span>
             </div>
             <div class="tred-body">
-                <h3 class="tred-title">Название</h3>
-                <p class="tred-description">Описание</p>
+                <h3 class="tred-title">{{ tred.title }}</h3>
+                {{ tred.content|safe }}
             </div>
         </div>
 
         <br>
         <br>
 
-        <div class="replies">
-            <div class="reply">
-                <div class="reply-head">
-                    <span class="reply-started-by">Автор</span>
-                    <span class="reply-data">Дата</span>
-                    <span class="reply-replies">Ответы</span>
-                    <a href="" class="reply-reply">Ответ</a>
+        {% for comment in tred.comments.all %}
+            <div class="comment">
+                <div class="comment-head">
+                    {% if comment.created_by.avatar %}
+                        <img class="comment-created-by-avatar" src="{{ comment.created_by.avatar.url }}">
+                    {% endif %}
+                    <span class="comment-created-by">{{ comment.created_by.name }} | </span>
+                    <span class="comment-created-by-points">Очков: {{ comment.created_by.points }} | </span>
+                    <span class="comment-date">{{ comment.date }} | </span>
+                    <span class="comment-replies">Ответов: {{ comment.num_replies }} | </span>
+                    <a href="" class="comment-reply">Ответ</a>
                 </div>
-                <div class="reply-body">
-                    <p class="reply-description">Описание</p>
+                <div class="comment-body">
+                    {{ comment.content|safe }}
                 </div>
-                
+
                 <br>
+                <br>
+
             </div>
-        </div>
+
+            {% for reply in comment.replies.all %}
+                <div class="reply">
+                    <div class="reply-head">
+                        <div class="reply-to"><span>Ответ: {{ comment.created_by.name }}</span></div>
+                        <br>
+                        {% if reply.created_by.avatar %}
+                            <img class="reply-created-by-avatar" src="{{ reply.created_by.avatar.url }}">
+                        {% endif %}
+                        <span class="reply-created-by">{{ reply.created_by.name }} | </span>
+                        <span class="reply-created-by-points">Очков: {{ reply.created_by.points }} | </span>
+                        <span class="reply-date">{{ reply.date }} | </span>
+                    </div>
+                    <div class="reply-body">
+                        {{ reply.content|safe }}
+                    </div>
+
+                    <br>
+                    <br>
+                </div>
+            {% endfor %}
+        {% endfor %}
 
     </div>
 

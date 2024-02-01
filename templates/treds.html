@@ -4,7 +4,7 @@
     
     <div class="container">
         <h3>=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=//</h3>
-        <a><h1 class="board-name">Название доски</h1></a>
+        <a><h1 class="board-name">{{ category.title }}</h1></a>
 
         <br>
 
@@ -20,22 +20,29 @@
         <br>
         <br>
 
-        <div class="treds">
-            <div class="tred">
-                <div class="tred-head">
-                    <span class="tred-started-by">Автор</span>
-                    <span class="tred-data">Дата</span>
-                    <span class="tred-replies">Ответы</span>
-                    <a href="" class="tred-reply">Ответ</a>
-                </div>
-                <div class="tred-body">
-                    <h3 class="tred-title">Название</h3>
-                    <p class="tred-description">Описание</p>
-                </div>
+        {% for tred in treds %}
+            <div class="treds">
+                <div class="tred">
+                    <div class="tred-head">
+                        {% if tred.started_by.avatar %}
+                            <img class="tred-started-by-avatar" src="{{ tred.started_by.avatar.url }}">
+                        {% endif %}
+                        <a class="tred-started-by">{{ tred.started_by.name }} | </a>
+                        <span class="tred-started-by-points">Очков: {{ tred.started_by.points }} | </span>
+                        <span class="tred-date">{{ tred.date }} | </span>
+                        <span class="tred-replies">Ответов: {{ tred.num_comments }}</span>
+                    </div>
+                    <div class="tred-body">
+                        <a class="tred-title" href="{{ tred.get_url }}"><h3>{{ tred.title }}</h3></a>
+                        {{ tred.content|safe }}
+                    </div>
 
-                <br>
+                    <br>
+                    <br>
+                </div>
             </div>
-        </div>
+        {% endfor %}
+
     </div>
 
 {% endblock content %}
