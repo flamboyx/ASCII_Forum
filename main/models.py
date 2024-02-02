@@ -11,10 +11,10 @@ User = get_user_model()
 
 class Author(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    slug = models.SlugField(max_length=50, unique=True, blank=True)
-    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=150, unique=True, blank=True)
+    name = models.CharField(max_length=150, unique=True, default=user.name, verbose_name='Псевдоним')
     points = models.IntegerField(default=0)
-    avatar = ResizedImageField(size=[100, 100], quality=100, upload_to='avatars', default=None, null=True, blank=True)
+    avatar = ResizedImageField(size=[100, 100], quality=100, upload_to='avatars', default=None, null=True, blank=True, verbose_name='Аватар')
 
     def __str__(self):
         return self.name
