@@ -1,28 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    
+
     <div class="container">
         <h3>=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=//</h3>
-        <a><h1 class="board-name">{{ category.title }}</h1></a>
-
-        <br>
-
-        {% if user.is_authenticated %}
-            <a href="{% url "create_tred" category.slug %}"><h3>Создать тред</h3></a>
-        {% endif %}
-
-        <div class="comment-area hide" id="tred-area">
-            <textarea name="comment" placeholder="Комментарий"></textarea>
-            <input type="submit">
-        </div>
-
+        <a><h1 class="board-name">Поиск: {{ query }} | Результатов найдено: {{ objects|length }}</h1></a>
         <h3>=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=//</h3>
 
         <br>
         <br>
 
-        {% for tred in treds %}
+        {% for tred in objects %}
             <div class="treds">
                 <div class="tred">
                     <div class="tred-head">

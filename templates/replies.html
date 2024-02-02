@@ -5,16 +5,6 @@
     <div class="container">
         <h3>=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=//</h3>
         <a href="{{ tred.category.get_url }}"><h1 class="board-name">{{ tred.category.title }}</h1></a>
-
-        <br>
-
-        <a onclick="showReplyComment()" href=""><h3>Ответить в тред</h3></a>
-        
-        <div class="comment-area hide" id="reply-area">
-            <textarea name="comment" placeholder="Комментарий"></textarea>
-            <input type="submit">
-        </div>
-
         <h3>=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=---=//</h3>
 
         <br>
@@ -32,8 +22,19 @@
             </div>
             <div class="tred-body">
                 <h3 class="tred-title">{{ tred.title }}</h3>
+                {% if tred.image %}
+                    <img class="tred-image" src="{{ tred.image.url }}">
+                {% endif %}
                 {{ tred.content|safe }}
             </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="comment-area">
+                    <textarea name="comment" placeholder="Комментарий..."></textarea>
+                    <input type="file" name="comment-image" accept="image/*">
+                    <input type="submit" name="comment-form">
+                </div>
+            </form>
         </div>
 
         <br>
@@ -49,11 +50,24 @@
                     <span class="comment-created-by-points">Очков: {{ comment.created_by.points }} | </span>
                     <span class="comment-date">{{ comment.date }} | </span>
                     <span class="comment-replies">Ответов: {{ comment.num_replies }} | </span>
-                    <a href="" class="comment-reply">Ответ</a>
                 </div>
+                <br>
+                <br>
                 <div class="comment-body">
+                    {% if comment.image %}
+                        <img class="tred-image" src="{{ comment.image.url }}">
+                    {% endif %}
                     {{ comment.content|safe }}
                 </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="reply-area">
+                        <textarea name="reply" placeholder="Комментарий..."></textarea>
+                        <input type="file" name="reply-image" accept="image/*">
+                        <input type="submit" name="reply-form">
+                        <input type="hidden" name="comment-id" value="{{ comment.id }}">
+                    </div>
+                </form>
 
                 <br>
                 <br>
@@ -72,7 +86,12 @@
                         <span class="reply-created-by-points">Очков: {{ reply.created_by.points }} | </span>
                         <span class="reply-date">{{ reply.date }} | </span>
                     </div>
+                    <br>
+                    <br>
                     <div class="reply-body">
+                        {% if reply.image %}
+                            <img class="tred-image" src="{{ reply.image.url }}">
+                        {% endif %}
                         {{ reply.content|safe }}
                     </div>
 

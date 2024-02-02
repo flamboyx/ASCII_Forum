@@ -20,8 +20,7 @@ class Author(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.slug = slugify(self.name)
         super(Author, self).save(*args, **kwargs)
 
     class Meta:
@@ -60,6 +59,8 @@ class Category(models.Model):
 class Reply(models.Model):
     created_by = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = HTMLField()
+    image = ResizedImageField(size=[250, 250], quality=100, upload_to='tred_images', default=None, null=True,
+                              blank=True, verbose_name='Изображение')
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -73,6 +74,8 @@ class Reply(models.Model):
 class Comment(models.Model):
     created_by = models.ForeignKey(Author, on_delete=models.CASCADE)
     content = HTMLField()
+    image = ResizedImageField(size=[250, 250], quality=100, upload_to='tred_images', default=None, null=True,
+                              blank=True, verbose_name='Изображение')
     date = models.DateTimeField(auto_now_add=True)
     replies = models.ManyToManyField(Reply, blank=True)
 
@@ -90,9 +93,11 @@ class Comment(models.Model):
 
 class Tred(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, verbose_name='Тема')
     started_by = models.ForeignKey(Author, on_delete=models.CASCADE)
-    content = HTMLField()
+    content = HTMLField(verbose_name='Комментарий')
+    image = ResizedImageField(size=[250, 250], quality=100, upload_to='tred_images', default=None, null=True,
+                              blank=True, verbose_name='Изображение')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     comments = models.ManyToManyField(Comment, blank=True)

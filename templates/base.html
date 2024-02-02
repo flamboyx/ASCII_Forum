@@ -5,25 +5,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASCII Forum</title>
+    <title>{{ title }}</title>
 
 </head>
 <body>
     <header>
         <h1>ASCII Forum</h1>
         <h2>#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#</h2>
+        {% if user.is_authenticated and author %}
+            <h4>Добро пожаловать, {{ author.name }}!</h4>
+        {% endif %}
         <div class="navbar">
             <nav class="navigation">
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a href="/">Главная</a>
+                        <a href="{% url 'home' %}">Главная</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="">Вход</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="">Регистрация</a>
-                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a href="{% url 'update' %}">Обновить профиль</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'logout' %}">Выйти</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}">Войти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'signup' %}">Зарегистрироваться</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

@@ -14,12 +14,11 @@
             </h4>
         </div>
         <h3>###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###*###</h3>
-        <div class="search-box">
-            <div>
+        <form action="{% url 'search_result' %}" role="form" method="GET">
+            <div class="search-box">
                 <span>-----#=</span>
                 <select name="" id="">
                     <option value="everything">Всё</option>
-                    <option value="board">Доска</option>
                     <option value="title">Название</option>
                     <option value="description">Описание</option>
                 </select>
@@ -28,11 +27,11 @@
                 <br>
                 <br>
                 <span>----->>></span>
-                <button>Найти</button>
+                <button type="submit" name="search">Найти</button>
                 <span><<<-----</span>
             </div>
-        </div>
-    
+        </form>
+
         <br>
 
         <div class="forums">
