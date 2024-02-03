@@ -22,7 +22,6 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('slug', models.SlugField(blank=True, max_length=400, unique=True)),
                 ('name', models.CharField(max_length=255, unique=True)),
-                ('points', models.IntegerField(default=0)),
                 ('avatar', django_resized.forms.ResizedImageField(blank=True, crop=None, default=None, force_format=None, keep_meta=True, null=True, quality=100, scale=None, size=[100, 100], upload_to='media/avatars')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

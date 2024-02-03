@@ -16,7 +16,6 @@
                     <img class="tred-started-by-avatar" src="{{ tred.started_by.avatar.url }}">
                 {% endif %}
                 <span class="tred-started-by">{{ tred.started_by.name }} | </span>
-                <span class="tred-started-by-points">Очков: {{ tred.started_by.points }} | </span>
                 <span class="tred-date">{{ tred.date }} | </span>
                 <span class="tred-replies">Ответов: {{ tred.num_comments }}</span>
             </div>
@@ -47,7 +46,6 @@
                         <img class="comment-created-by-avatar" src="{{ comment.created_by.avatar.url }}">
                     {% endif %}
                     <span class="comment-created-by">{{ comment.created_by.name }} | </span>
-                    <span class="comment-created-by-points">Очков: {{ comment.created_by.points }} | </span>
                     <span class="comment-date">{{ comment.date }} | </span>
                     <span class="comment-replies">Ответов: {{ comment.num_replies }} | </span>
                 </div>
@@ -83,7 +81,6 @@
                             <img class="reply-created-by-avatar" src="{{ reply.created_by.avatar.url }}">
                         {% endif %}
                         <span class="reply-created-by">{{ reply.created_by.name }} | </span>
-                        <span class="reply-created-by-points">Очков: {{ reply.created_by.points }} | </span>
                         <span class="reply-date">{{ reply.date }} | </span>
                     </div>
                     <br>
