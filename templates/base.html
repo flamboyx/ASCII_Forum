@@ -11,8 +11,12 @@
     <header>
         <h1>ASCII Forum</h1>
         <h2>#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#%%#</h2>
-        {% if user.is_authenticated and author %}
-            <h4>Добро пожаловать, {{ author.name }}!</h4>
+        {% if user.is_authenticated %}
+            {% if author %}
+                <h4>Добро пожаловать, {{ author.name }}!</h4>
+            {% else %}
+                <h4>Добро пожаловать, {{ user }}!</h4>
+            {% endif %}
         {% endif %}
         <div class="navbar">
             <nav class="navigation">

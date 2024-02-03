@@ -6,5 +6,5 @@ urlpatterns = [
     path('<slug>/', treds, name='treds'),
     path('<category>/replies/<tred>/', replies, name='replies'),
     path('<slug>/create_tred/', create_tred, name='create_tred'),
-    path('search', search_result, name='search_result'),
+    path('/search', search_result, name='search_result'),
 ]
